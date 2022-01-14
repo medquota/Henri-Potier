@@ -1,8 +1,9 @@
 import './App.css'
 
 import React, { Component } from 'react'
-import Library from '../library/Library'
+import { Route, Switch } from 'react-router-dom'
 import Cart from '../cart/Cart'
+import Library from '../library/Library'
 import BooksFilter from '../library/BooksFilter'
 
 class App extends Component {
@@ -12,6 +13,7 @@ class App extends Component {
     this.state = {
       filteredBooks: [],
       cart: {},
+      cartItemAmount: 0,
     }
     this.books = []
     this.filter = React.createRef();
@@ -40,8 +42,12 @@ class App extends Component {
         amount: 1,
       }
     }
+
+    const cartItemAmount = this.state.cartItemAmount + 1
+
     this.setState({
-      cart: cart,
+      cart,
+      cartItemAmount,
     })
   }
 
@@ -63,11 +69,18 @@ class App extends Component {
   render() {
     return (
       <div className="App  flex-container">
-        <Library books={this.state.filteredBooks} handleAddToCart={this.handleAddToCart}>
-          <BooksFilter filterRef={this.filter} handleFilter={this.handleFilter} />
-        </Library>
-        {Object.entries(this.state.cart).length > 0 && <Cart cart={this.state.cart} />}
-      </div>
+        <Switch>
+          <Route exact={true} path="/" render={() =>
+            <Library books={this.state.filteredBooks} handleAddToCart={this.handleAddToCart} cartItemAmount={this.state.cartItemAmount}>
+              <BooksFilter filterRef={this.filter} handleFilter={this.handleFilter} />
+            </Library>
+          } />
+          <Route exact={true} path="/cart" render={() =>
+            <Cart cart={this.state.cart} cartItemAmount={this.state.cartItemAmount} />
+          } />
+          <Route render={() => <div>404 : Not found</div>} />
+        </Switch>
+      </div >
     )
   }
 }
