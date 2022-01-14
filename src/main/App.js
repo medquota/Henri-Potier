@@ -2,6 +2,7 @@ import './App.css'
 
 import React, { Component } from 'react'
 import Library from '../library/Library'
+import Cart from '../cart/Cart'
 import BooksFilter from '../library/BooksFilter'
 
 class App extends Component {
@@ -10,7 +11,7 @@ class App extends Component {
     super(props);
     this.state = {
       filteredBooks: [],
-      //cart: {},
+      cart: {},
     }
     this.books = []
     this.filter = React.createRef();
@@ -65,7 +66,7 @@ class App extends Component {
         <Library books={this.state.filteredBooks} handleAddToCart={this.handleAddToCart}>
           <BooksFilter filterRef={this.filter} handleFilter={this.handleFilter} />
         </Library>
-        {/* {Object.entries(this.state.cart).length > 0 && <Cart cart={this.state.cart} />} */}
+        {Object.entries(this.state.cart).length > 0 && <Cart cart={this.state.cart} />}
       </div>
     )
   }
